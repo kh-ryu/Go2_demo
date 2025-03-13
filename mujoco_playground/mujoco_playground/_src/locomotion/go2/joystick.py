@@ -34,10 +34,10 @@ def default_config() -> config_dict.ConfigDict:
       ctrl_dt=0.02,
       sim_dt=0.004,
       episode_length=1000,
-      Kp=50.0,
-      Kd=0.5,
+      Kp=35.0,
+      Kd=0.5239,
       action_repeat=1,
-      action_scale=0.5,
+      action_scale=0.3,
       history_len=1,
       soft_joint_pos_limit_factor=0.95,
       noise_config=config_dict.create(
@@ -53,10 +53,10 @@ def default_config() -> config_dict.ConfigDict:
       reward_config=config_dict.create(
           scales=config_dict.create(
               # Tracking.
-              tracking_lin_vel=1.0,
-              tracking_ang_vel=0.5,
+              tracking_lin_vel=1.5,
+              tracking_ang_vel=0.8,
               # Base reward.
-              lin_vel_z=-0.5,
+              lin_vel_z=-2.0,
               ang_vel_xy=-0.05,
               orientation=-5.0,
               # Other.
@@ -86,7 +86,7 @@ def default_config() -> config_dict.ConfigDict:
       ),
       command_config=config_dict.create(
           # Uniform distribution for command amplitude.
-          a=[1.5, 0.8, 1.2],
+          a=[1.5, 0.8, 0.7],
           # Probability of not zeroing out new command.
           b=[0.9, 0.25, 0.5],
       ),
@@ -114,7 +114,9 @@ class Joystick(go2_base.Go2Env):
     self._default_pose = jp.array(self._mj_model.keyframe("home").qpos[7:])
 
     # Note: First joint is freejoint.
-    self._lowers, self._uppers = self.mj_model.jnt_range[1:].T
+    # self._lowers, self._uppers = self.mj_model.jnt_range[1:].T
+    self._lowers = jp.array([-0.7, -1.0, -2.2] * 4)
+    self._uppers = jp.array([0.52, 2.1, -0.4] * 4)
     self._soft_lowers = self._lowers * self._config.soft_joint_pos_limit_factor
     self._soft_uppers = self._uppers * self._config.soft_joint_pos_limit_factor
 

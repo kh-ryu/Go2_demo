@@ -31,14 +31,11 @@ def get_assets() -> Dict[str, bytes]:
   assets = {}
   mjx_env.update_assets(assets, consts.ROOT_PATH / "xmls", "*.xml")
   mjx_env.update_assets(assets, consts.ROOT_PATH / "xmls" / "assets")
-  path = mjx_env.MENAGERIE_PATH / "unitree_go1"
-  mjx_env.update_assets(assets, path, "*.xml")
-  mjx_env.update_assets(assets, path / "assets")
   return assets
 
 
 class Go2Env(mjx_env.MjxEnv):
-  """Base class for Go1 environments."""
+  """Base class for Go2 environments."""
 
   def __init__(
       self,
@@ -65,6 +62,8 @@ class Go2Env(mjx_env.MjxEnv):
     self._mjx_model = mjx.put_model(self._mj_model)
     self._xml_path = xml_path
     self._imu_site_id = self._mj_model.site("imu").id
+    print("Self imu site id: ", self._imu_site_id)
+    print("Self mj model site id: ", self._mj_model.site("imu"))
 
   # Sensor readings.
 
